@@ -1,0 +1,20 @@
+module Base
+{
+    item VargursBloodSpice
+    {
+        DisplayName = Blood,
+        DisplayCategory = Food,
+        ItemType = base:food,
+        Icon = Wine2Full,
+        Weight = 0.2,
+        Spice = true,
+        FoodType = Meat,
+        HungerChange = -10.0,
+        Calories = 0.0,
+        Carbohydrates = 0.0,
+        Proteins = 0.0,
+        Lipids = 0.0,
+        CantBeFrozen = true,
+        EvolvedRecipe = Pizza:2;Sandwich:2;Burger:2;Rice:2;Pasta:2;Stir fry:2;Salad:2;Taco:2;Burrito:2;Soup:2;Stew:2,
+    }
+}

@@ -39,3 +39,19 @@ luac.out
 *.x86_64
 *.hex
 
+# IntelliJ IDEA
+.idea/
+*.iml
+.emmyrc.json
+.emmyrc.example.json
+
+# Project Zomboid logs and generated data
+logs/
+console.txt
+*.log
+Save/
+
+# Build/package output
+build/
+dist/
+*.zip

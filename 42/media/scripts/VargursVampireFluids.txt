@@ -1,0 +1,48 @@
+module Base
+{
+    fluid VargursHumanBlood
+    {
+        ColorReference = DarkRed,
+        DisplayName = Fluid_Name_VargursHumanBlood,
+        Categories
+        {
+            Beverage,
+        }
+        BlendWhiteList
+        {
+            whitelist = true,
+            categories
+            {
+                Beverage,
+            }
+        }
+    }
+
+    fluid VargursZombieBlood
+    {
+        ColorReference = Cola,
+        DisplayName = Fluid_Name_VargursZombieBlood,
+        Categories
+        {
+            Beverage,
+        }
+        Properties
+        {
+            ThirstChange = 0.0,
+        }
+        Poison
+        {
+            maxEffect = Medium,
+            minAmount = 1.0,
+            diluteRatio = 0.2,
+        }
+        BlendWhiteList
+        {
+            whitelist = true,
+            categories
+            {
+                Beverage,
+            }
+        }
+    }
+}
