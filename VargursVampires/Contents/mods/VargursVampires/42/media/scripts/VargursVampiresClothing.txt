@@ -1,0 +1,19 @@
+module Base
+{
+    item VargursVampiresCorpseResistance
+    {
+        DisplayName = Vampire Corpse Resistance,
+        ItemType = base:clothing,
+        BodyLocation = vargursvampires:corpseresistance,
+        ClothingItem = VargursVampiresCorpseResistance,
+        Icon = Vest,
+        Hidden = true,
+        Weight = 0.0,
+        CorpseSicknessDefense = 80.0,
+        ConditionMax = 100,
+        ChanceToFall = 0,
+        Insulation = 0.0,
+        WindResistance = 0.0,
+        WaterResistance = 0.0,
+    }
+}

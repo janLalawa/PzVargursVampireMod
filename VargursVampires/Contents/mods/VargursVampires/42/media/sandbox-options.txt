@@ -1,0 +1,157 @@
+VERSION = 1,
+
+option VargursVampires.Enabled
+{
+    type = boolean,
+    default = true,
+    page = VargursVampires,
+    translation = VargursVampires_Enabled,
+}
+
+option VargursVampires.DifficultyPreset
+{
+    type = enum,
+    numValues = 6,
+    default = 1,
+    page = VargursVampires,
+    translation = VargursVampires_DifficultyPreset,
+    valueTranslation = VargursVampires_DifficultyPreset,
+}
+
+option VargursVampires.BloodLoot
+{
+    type = double,
+    min = 0.0,
+    max = 4.0,
+    default = 0.6,
+    page = VargursVampires,
+    translation = VargursVampires_BloodLoot,
+}
+
+option VargursVampires.VampireHealthRegenMultiplier
+{
+    type = double,
+    min = 0.0,
+    max = 10.0,
+    default = 3,
+    page = VargursVampires,
+    translation = VargursVampires_VampireHealthRegenMultiplier,
+}
+
+option VargursVampires.SunDamageEnabled
+{
+    type = boolean,
+    default = true,
+    page = VargursVampires,
+    translation = VargursVampires_SunDamageEnabled,
+}
+
+option VargursVampires.SunBurnRandomChance
+{
+    type = double,
+    min = 0.0,
+    max = 1.0,
+    default = 0.01,
+    page = VargursVampires,
+    translation = VargursVampires_SunBurnRandomChance,
+}
+
+option VargursVampires.SunAttenuationClouds
+{
+    type = double,
+    min = 0.0,
+    max = 1.0,
+    default = 0.3,
+    page = VargursVampires,
+    translation = VargursVampires_SunAttenuationClouds,
+}
+
+option VargursVampires.SunAttenuationPrecipitation
+{
+    type = double,
+    min = 0.0,
+    max = 1.0,
+    default = 0.7,
+    page = VargursVampires,
+    translation = VargursVampires_SunAttenuationPrecipitation,
+}
+
+option VargursVampires.SunAttenuationFog
+{
+    type = double,
+    min = 0.0,
+    max = 1.0,
+    default = 0.6,
+    page = VargursVampires,
+    translation = VargursVampires_SunAttenuationFog,
+}
+
+option VargursVampires.SunAttenuationVehicle
+{
+    type = double,
+    min = 0.0,
+    max = 1.0,
+    default = 0.9,
+    page = VargursVampires,
+    translation = VargursVampires_SunAttenuationVehicle,
+}
+
+option VargursVampires.SunEnvironmentalUVMultiplier
+{
+    type = double,
+    min = 0.0,
+    max = 3.0,
+    default = 1.0,
+    page = VargursVampires,
+    translation = VargursVampires_SunEnvironmentalUVMultiplier,
+}
+
+option VargursVampires.SunDaylightCurveExponent
+{
+    type = double,
+    min = 0.1,
+    max = 1.0,
+    default = 0.5,
+    page = VargursVampires,
+    translation = VargursVampires_SunDaylightCurveExponent,
+}
+
+option VargursVampires.SunNoonIntensityBonus
+{
+    type = double,
+    min = 0.0,
+    max = 1.0,
+    default = 0.4,
+    page = VargursVampires,
+    translation = VargursVampires_SunNoonIntensityBonus,
+}
+
+option VargursVampires.SunNoonIntensityWidthHours
+{
+    type = double,
+    min = 0.1,
+    max = 3.0,
+    default = 0.6,
+    page = VargursVampires,
+    translation = VargursVampires_SunNoonIntensityWidthHours,
+}
+
+option VargursVampires.SunDamagePerMinute
+{
+    type = double,
+    min = 0.0,
+    max = 150.0,
+    default = 18.0,
+    page = VargursVampires,
+    translation = VargursVampires_SunDamagePerMinute,
+}
+
+option VargursVampires.Uninstall
+{
+    type = integer,
+    min = 0,
+    max = 1,
+    default = 0,
+    page = VargursVampires,
+    translation = VargursVampires_Uninstall,
+}

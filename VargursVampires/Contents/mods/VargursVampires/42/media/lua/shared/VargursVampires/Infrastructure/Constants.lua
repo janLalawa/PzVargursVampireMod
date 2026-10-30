@@ -1,0 +1,14 @@
+local Constants = {
+    MOD_ID = "VargursVampires",
+    STATE_KEY = "vargursVampires",
+    MAX_SUN_EXPOSURE_MULTIPLIER = 6.0,
+    SUN_EXPOSURE_FEEDBACK_REFERENCE = 1.5,
+    MIN_EFFECTIVE_LOCAL_UV = 0.04,
+    UPDATE_INTERVAL_MINUTES = 1,
+    HUNGER_REDUCTION_PER_FOOD_EFFECT_UNIT = 0.10,
+    FOOD_TIMER_PER_HUNGER = 13000.0,
+    MAX_FOOD_TIMER = 11000.0,
+    COMMAND_REQUEST_STATE = "RequestState",
+}
+
+return Constants

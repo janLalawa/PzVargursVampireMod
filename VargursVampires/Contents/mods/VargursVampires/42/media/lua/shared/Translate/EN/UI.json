@@ -1,0 +1,17 @@
+{
+    "UI_trait_VargursVampires_Vampire": "Vampire",
+    "UI_trait_VargursVampires_VampireDesc": "Improved health regeneration.\nCan eat meat, raw meat, and blood.\nLowered rate of corpse sickness.\nSunlight burns exposed skin.\nNon-meat does not provide sustenance and will make you ill.",
+    "UI_trait_VargursVampires_SunResistant": "Sun Resistant",
+    "UI_trait_VargursVampires_SunResistantDesc": "Reduces incoming sunlight UV by 20 percent.",
+    "UI_VargursVampires_BloodExtraction_Extract": "Extract Zombie Blood",
+    "UI_VargursVampires_BloodExtraction_Job": "Extracting zombie blood",
+    "UI_VargursVampires_BloodExtraction_Reason_Corpse": "Requires an intact, dead zombie corpse away from fire.",
+    "UI_VargursVampires_BloodExtraction_Reason_Extracted": "Blood has already been extracted from this corpse.",
+    "UI_VargursVampires_BloodExtraction_Reason_Freshness": "Requires a corpse no more than two hours old.",
+    "UI_VargursVampires_BloodExtraction_Reason_Player": "Cannot extract blood while dead or inside a vehicle.",
+    "UI_VargursVampires_BloodExtraction_Reason_Tool": "Requires a sharp knife in working condition.",
+    "UI_VargursVampires_BloodExtraction_Reason_Container": "Requires an unsealed, refillable fluid container in your inventory.",
+    "UI_VargursVampires_BloodExtraction_Reason_Mixture": "The container must be empty or contain only zombie blood.",
+    "UI_VargursVampires_BloodExtraction_Reason_Capacity": "The container is full.",
+    "UI_VargursVampires_BloodExtraction_Reason_Distance": "Move closer to the corpse."
+}

@@ -1,0 +1,23 @@
+module Base
+{
+    character_trait_definition vargursvampires:vampire
+    {
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = vargursvampires:vampire,
+        Cost = -5,
+        UIName = UI_trait_VargursVampires_Vampire,
+        UIDescription = UI_trait_VargursVampires_VampireDesc,
+        XPBoosts = Fitness=2;Strength=1;Nimble=1,
+    }
+
+    character_trait_definition vargursvampires:sunresistant
+    {
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = vargursvampires:sunresistant,
+        Cost = 4,
+        UIName = UI_trait_VargursVampires_SunResistant,
+        UIDescription = UI_trait_VargursVampires_SunResistantDesc,
+    }
+}

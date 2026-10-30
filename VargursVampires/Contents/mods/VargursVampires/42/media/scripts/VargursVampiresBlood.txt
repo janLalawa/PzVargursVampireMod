@@ -1,0 +1,27 @@
+module Base
+{
+    item VargursHumanBloodBottle
+    {
+        DisplayName = Human Blood Bottle,
+        DisplayCategory = Food,
+        ItemType = base:normal,
+        Weight = 1.0,
+        Icon = Scotch,
+        IconFluidMask = Scotch_Mask,
+        StaticModel = ScotchBottle,
+        WorldStaticModel = ScotchBottle,
+        Tags = base:glass;base:glassbottle;base:cookable,
+        component FluidContainer
+        {
+            ContainerName = BottleGlass,
+            Capacity = 0.45,
+            InitialPercent = 1.0,
+            InputLocked = true,
+            CustomDrinkSound = DrinkingFromBottleGlass,
+            Fluids
+            {
+                fluid = VargursHumanBlood:1.0,
+            }
+        }
+    }
+}

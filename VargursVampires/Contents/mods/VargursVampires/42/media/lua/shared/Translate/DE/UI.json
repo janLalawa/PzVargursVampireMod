@@ -1,0 +1,17 @@
+{
+    "UI_trait_VargursVampires_Vampire": "Vampir",
+    "UI_trait_VargursVampires_VampireDesc": "Verbesserte Gesundheitsregeneration.\nKann Fleisch, rohes Fleisch und Blut zu sich nehmen.\nGeringere Anf\u00e4lligkeit f\u00fcr Leichenkrankheit.\nSonnenlicht verbrennt unbedeckte Haut.\nNahrung ohne Fleisch liefert keine N\u00e4hrstoffe und macht krank.",
+    "UI_trait_VargursVampires_SunResistant": "Sonnenresistent",
+    "UI_trait_VargursVampires_SunResistantDesc": "Verringert die einfallende UV-Strahlung des Sonnenlichts um 20 Prozent.",
+    "UI_VargursVampires_BloodExtraction_Extract": "Zombieblut entnehmen",
+    "UI_VargursVampires_BloodExtraction_Job": "Zombieblut wird entnommen",
+    "UI_VargursVampires_BloodExtraction_Reason_Corpse": "Ben\u00f6tigt eine intakte Zombieleiche abseits von Feuer.",
+    "UI_VargursVampires_BloodExtraction_Reason_Extracted": "Dieser Leiche wurde bereits Blut entnommen.",
+    "UI_VargursVampires_BloodExtraction_Reason_Freshness": "Ben\u00f6tigt eine Leiche, die h\u00f6chstens zwei Stunden alt ist.",
+    "UI_VargursVampires_BloodExtraction_Reason_Player": "Im toten Zustand oder in einem Fahrzeug kann kein Blut entnommen werden.",
+    "UI_VargursVampires_BloodExtraction_Reason_Tool": "Ben\u00f6tigt ein scharfes, brauchbares Messer.",
+    "UI_VargursVampires_BloodExtraction_Reason_Container": "Ben\u00f6tigt einen offenen, nachf\u00fcllbaren Fl\u00fcssigkeitsbeh\u00e4lter im Inventar.",
+    "UI_VargursVampires_BloodExtraction_Reason_Mixture": "Der Beh\u00e4lter muss leer sein oder ausschlie\u00dflich Zombieblut enthalten.",
+    "UI_VargursVampires_BloodExtraction_Reason_Capacity": "Der Beh\u00e4lter ist voll.",
+    "UI_VargursVampires_BloodExtraction_Reason_Distance": "Geh n\u00e4her an die Leiche heran."
+}

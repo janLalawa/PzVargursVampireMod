@@ -1,0 +1,17 @@
+{
+    "UI_trait_VargursVampires_Vampire": "吸血鬼",
+    "UI_trait_VargursVampires_VampireDesc": "体力の回復速度が向上します。\n肉、生肉、血液を摂取できます。\n死体による体調不良になりにくくなります。\n日光を浴びると露出した皮膚がやけどします。\n肉以外の食べ物では栄養を得られず、体調を崩します。",
+    "UI_trait_VargursVampires_SunResistant": "日光耐性",
+    "UI_trait_VargursVampires_SunResistantDesc": "日光から受ける紫外線を20パーセント軽減します。",
+    "UI_VargursVampires_BloodExtraction_Extract": "ゾンビの血液を採取",
+    "UI_VargursVampires_BloodExtraction_Job": "ゾンビの血液を採取中",
+    "UI_VargursVampires_BloodExtraction_Reason_Corpse": "火から離れた場所にある、損壊していないゾンビの死体が必要です。",
+    "UI_VargursVampires_BloodExtraction_Reason_Extracted": "この死体からはすでに血液が採取されています。",
+    "UI_VargursVampires_BloodExtraction_Reason_Freshness": "死亡から2時間以内の死体が必要です。",
+    "UI_VargursVampires_BloodExtraction_Reason_Player": "死亡中や車内では血液を採取できません。",
+    "UI_VargursVampires_BloodExtraction_Reason_Tool": "使用可能な状態の鋭いナイフが必要です。",
+    "UI_VargursVampires_BloodExtraction_Reason_Container": "所持品に、密封されておらず詰め替え可能な液体容器が必要です。",
+    "UI_VargursVampires_BloodExtraction_Reason_Mixture": "容器は空であるか、ゾンビの血液のみが入っている必要があります。",
+    "UI_VargursVampires_BloodExtraction_Reason_Capacity": "容器がいっぱいです。",
+    "UI_VargursVampires_BloodExtraction_Reason_Distance": "死体にもっと近づいてください。"
+}
