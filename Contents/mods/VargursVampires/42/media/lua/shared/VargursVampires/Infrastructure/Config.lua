@@ -3,7 +3,7 @@ local defaults = {
     difficultyPreset = 1,
     uninstall = 0,
     bloodLoot = 0.6,
-    vampireHealthRegenMultiplier = 5,
+    vampireHealthRegenMultiplier = 3,
     sunDamageEnabled = true,
     sunBurnRandomChance = 0.01,
     sunAttenuationClouds = 0.3,
@@ -13,8 +13,8 @@ local defaults = {
     sunEnvironmentalUVMultiplier = 1,
     sunDaylightCurveExponent = 0.5,
     sunNoonIntensityBonus = 0.4,
-    sunNoonIntensityWidthHours = 1,
-    sunDamagePerMinute = 16,
+    sunNoonIntensityWidthHours = 0.6,
+    sunDamagePerMinute = 18,
 }
 
 ---@type table<integer, table<string, number>?>
@@ -59,7 +59,7 @@ local bounds = {
     sunDaylightCurveExponent = { 0.1, 1.0 },
     sunNoonIntensityBonus = { 0.0, 1.0 },
     sunNoonIntensityWidthHours = { 0.1, 3.0 },
-    sunDamagePerMinute = { 0.0, 100.0 },
+    sunDamagePerMinute = { 0.0, 150.0 },
 }
 
 local Config = {}
