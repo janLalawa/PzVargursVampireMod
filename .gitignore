@@ -44,6 +44,7 @@ luac.out
 *.iml
 .emmyrc.json
 .emmyrc.example.json
+/.vscode/settings.json
 
 # Project Zomboid logs and generated data
 logs/

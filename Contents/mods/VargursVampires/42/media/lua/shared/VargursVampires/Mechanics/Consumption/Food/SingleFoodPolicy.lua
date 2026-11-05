@@ -4,7 +4,7 @@ local FoodConsumptionSnapshot = require("VargursVampires/Mechanics/Consumption/F
 local SustenanceValues = require("VargursVampires/Mechanics/Consumption/Food/SustenanceValues")
 
 local function isSustainingFood(food)
-    return FoodTypes.isSustaining(food:getFoodType())
+    return FoodTypes.isSustaining(food:getFoodType(), food:getFullType())
 end
 
 local function eatWithRawMeatSafety(item, vanillaEat)

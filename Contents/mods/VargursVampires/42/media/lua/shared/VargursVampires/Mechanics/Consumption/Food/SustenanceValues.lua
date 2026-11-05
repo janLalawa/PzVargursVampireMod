@@ -85,7 +85,7 @@ local SustenanceValues = {
 }
 
 function SustenanceValues.get(foodType, fullType, rawEligible)
-    local sustaining = FoodTypes.isSustaining(foodType)
+    local sustaining = FoodTypes.isSustaining(foodType, fullType)
     local defaults = sustaining and SustenanceValues.sustaining or SustenanceValues.incompatible
     local rawOverride = sustaining and rawEligible and SustenanceValues.sustainingRaw or nil
     local typeOverride = SustenanceValues.foodTypes[foodType]
