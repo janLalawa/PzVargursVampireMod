@@ -37,14 +37,27 @@ local function precipitationMultiplier(climateManager, maximumAttenuation)
     return attenuationFactor(precipitationIntensity, maximumAttenuation, responseExponent)
 end
 
-function WeatherPolicy.multiplier()
+function WeatherPolicy.capture(includeDebug)
     local climateManager = getClimateManager()
     local config = Config.get()
     local cloudFactor = cloudMultiplier(climateManager, config.sunAttenuationClouds)
     local fogFactor = fogMultiplier(climateManager, config.sunAttenuationFog)
-    local precipitationFactor = precipitationMultiplier(climateManager, config.sunAttenuationPrecipitation)
+    local rainFactor = precipitationMultiplier(climateManager, config.sunAttenuationPrecipitation)
+    local multiplier = cloudFactor * fogFactor * rainFactor
 
-    return cloudFactor * fogFactor * precipitationFactor
+    if not includeDebug then
+        return multiplier
+    end
+
+    return multiplier, {
+        cloudMultiplier = cloudFactor,
+        fogMultiplier = fogFactor,
+        rainMultiplier = rainFactor,
+    }
+end
+
+function WeatherPolicy.multiplier()
+    return WeatherPolicy.capture(false)
 end
 
 return WeatherPolicy

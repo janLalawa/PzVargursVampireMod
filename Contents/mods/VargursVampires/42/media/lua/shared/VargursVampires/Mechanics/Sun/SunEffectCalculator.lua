@@ -14,11 +14,25 @@ function SunEffectCalculator.damage(weightedUV, elapsedMinutes, config)
     return multiplier * config.sunDamagePerMinute * elapsed
 end
 
+function SunEffectCalculator.calculateRates(model, config)
+    local totalDamagePerGameMinute = 0.0
+    for _, region in pairs(model.regions) do
+        region.damagePerMinute = SunEffectCalculator.damage(region.weightedUV, 1.0, config)
+        if model.debug then
+            totalDamagePerGameMinute = totalDamagePerGameMinute + region.damagePerMinute
+        end
+    end
+    if model.debug then
+        model.debug.totalDamagePerGameMinute = totalDamagePerGameMinute
+    end
+    return model
+end
+
 ---@param model PlayerSunModel
 ---@return PlayerSunModel
 function SunEffectCalculator.calculate(model, elapsedMinutes, config, remainingHealth)
+    SunEffectCalculator.calculateRates(model, config)
     for _, region in pairs(model.regions) do
-        region.damagePerMinute = SunEffectCalculator.damage(region.weightedUV, 1.0, config)
         region.damage = region.damagePerMinute * math.max(0.0, elapsedMinutes)
     end
 

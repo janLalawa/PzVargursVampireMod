@@ -1,21 +1,33 @@
 local ProtectionValues = require("VargursVampires/Mechanics/Sun/Protection/Clothing/ProtectionValues")
 
 ---@class SunRegion
+---@field debug SunRegionDebug|nil
 ---@field intactLayers number
 ---@field windResistance number
 ---@field itemTransmissionMultiplier number
 ---@field weight number
 ---@field transmission number
----@field windProtectionBonus number
 ---@field effectiveUV number
 ---@field weightedUV number
 ---@field pain number
 ---@field damage number
 ---@field damagePerMinute number
 
+---@class SunRegionDebug
+---@field uvBeforeClothing number
+---@field layerTransmission number
+---@field windTransmissionMultiplier number
+---@field itemTransmissionMultiplier number
+
+---@class SunExposureDebug
+---@field environment SunEnvironmentDebugSnapshot
+---@field environmentalUV number
+---@field totalDamagePerGameMinute number
+
 ---@class PlayerSunModel
 ---@field regions table<string, SunRegion>
 ---@field totalWeightedUV number
+---@field debug SunExposureDebug|nil
 ---@field clothingMultiplier number
 
 local SunModel = {}
@@ -41,7 +53,6 @@ function SunModel.new(previousPain)
             itemTransmissionMultiplier = 1.0,
             weight = ProtectionValues.get(regionName).weight / totalWeight,
             transmission = 1.0,
-            windProtectionBonus = 0.0,
             effectiveUV = 0.0,
             weightedUV = 0.0,
             pain = previous.pain or previous.targetPain or 0.0,

@@ -8,14 +8,34 @@ local PositionPolicy = {}
 local CACHE_DURATION_MS = 250
 local cacheByPlayer = setmetatable({}, { __mode = "k" })
 
-function PositionPolicy.multiplier(player)
+function PositionPolicy.capture(player, includeDebug)
     if not player then
-        return 0.0
+        if not includeDebug then
+            return 0.0
+        end
+        return 0.0, {
+            treeShadeMultiplier = 1.0,
+            overheadShadeMultiplier = 1.0,
+            wallShadeMultiplier = 1.0,
+            shadeMultiplier = 1.0,
+            indoorWindowMultiplier = 1.0,
+            umbrellaMultiplier = 1.0,
+        }
     end
     local square = player:getCurrentSquare()
     if not square then
         cacheByPlayer[player] = nil
-        return 0.0
+        if not includeDebug then
+            return 0.0
+        end
+        return 0.0, {
+            treeShadeMultiplier = 1.0,
+            overheadShadeMultiplier = 1.0,
+            wallShadeMultiplier = 1.0,
+            shadeMultiplier = 1.0,
+            indoorWindowMultiplier = 1.0,
+            umbrellaMultiplier = 1.0,
+        }
     end
 
     local outside = square:isOutside()
@@ -23,23 +43,55 @@ function PositionPolicy.multiplier(player)
     local now = getTimestampMs()
     local cached = cacheByPlayer[player]
     if cached and cached.square == square and cached.outside == outside and now >= cached.sampledAt and now < cached.expiresAt then
-        return math.min(cached.multiplier, umbrellaMultiplier)
+        local multiplier = math.min(cached.multiplier, umbrellaMultiplier)
+        if not includeDebug then
+            return multiplier
+        end
+        return multiplier, {
+            treeShadeMultiplier = cached.treeShadeMultiplier,
+            overheadShadeMultiplier = cached.overheadShadeMultiplier,
+            wallShadeMultiplier = cached.wallShadeMultiplier,
+            shadeMultiplier = cached.shadeMultiplier,
+            indoorWindowMultiplier = cached.indoorWindowMultiplier,
+            umbrellaMultiplier = umbrellaMultiplier,
+        }
     end
 
-    local multiplier
-    if outside then
-        multiplier = math.min(TreePolicy.multiplier(square), OverheadPolicy.multiplier(square), WallPolicy.multiplier(square))
-    else
-        multiplier = IndoorPolicy.multiplier(square)
-    end
+    local treeShadeMultiplier = outside and TreePolicy.multiplier(square) or 1.0
+    local overheadShadeMultiplier = outside and OverheadPolicy.multiplier(square) or 1.0
+    local wallShadeMultiplier = outside and WallPolicy.multiplier(square) or 1.0
+    local shadeMultiplier = math.min(treeShadeMultiplier, overheadShadeMultiplier, wallShadeMultiplier)
+    local indoorWindowMultiplier = outside and 1.0 or IndoorPolicy.multiplier(square)
+    local multiplier = outside and shadeMultiplier or indoorWindowMultiplier
     cacheByPlayer[player] = {
         square = square,
         outside = outside,
         sampledAt = now,
         expiresAt = now + CACHE_DURATION_MS,
         multiplier = multiplier,
+        treeShadeMultiplier = treeShadeMultiplier,
+        overheadShadeMultiplier = overheadShadeMultiplier,
+        wallShadeMultiplier = wallShadeMultiplier,
+        shadeMultiplier = shadeMultiplier,
+        indoorWindowMultiplier = indoorWindowMultiplier,
     }
-    return math.min(multiplier, umbrellaMultiplier)
+
+    local positionMultiplier = math.min(multiplier, umbrellaMultiplier)
+    if not includeDebug then
+        return positionMultiplier
+    end
+    return positionMultiplier, {
+        treeShadeMultiplier = treeShadeMultiplier,
+        overheadShadeMultiplier = overheadShadeMultiplier,
+        wallShadeMultiplier = wallShadeMultiplier,
+        shadeMultiplier = shadeMultiplier,
+        indoorWindowMultiplier = indoorWindowMultiplier,
+        umbrellaMultiplier = umbrellaMultiplier,
+    }
+end
+
+function PositionPolicy.multiplier(player)
+    return PositionPolicy.capture(player, false)
 end
 
 return PositionPolicy
