@@ -4,6 +4,37 @@ local SunModel = require("VargursVampires/Mechanics/Sun/SunModel")
 
 local ProtectionPolicy = {}
 
+local function materialTransmission(material, profile)
+    local wind = 1.0 - material.windResistance * (1.0 - profile.windTransmissionMultiplierAtMax)
+    local insulation = 1.0 - material.insulation * (1.0 - profile.insulationTransmissionMultiplierAtMax)
+    return wind, insulation
+end
+
+local function transmissionForMaterials(materialLayers, profile)
+    local function providesMoreMaterialProtection(garment, otherGarment)
+        local wind, insulation = materialTransmission(garment, profile)
+        local otherWind, otherInsulation = materialTransmission(otherGarment, profile)
+        local transmission = wind * insulation
+        local otherTransmission = otherWind * otherInsulation
+        if transmission == otherTransmission then
+            return wind < otherWind
+        end
+        return transmission < otherTransmission
+    end
+
+    table.sort(materialLayers, providesMoreMaterialProtection)
+
+    local windMultiplier = 1.0
+    local insulationMultiplier = 1.0
+    for rank, garment in ipairs(materialLayers) do
+        local stackingStrength = profile.materialStackingStrengths[rank] or profile.additionalMaterialStackingStrength
+        local wind, insulation = materialTransmission(garment, profile)
+        windMultiplier = windMultiplier * (1.0 - stackingStrength * (1.0 - wind))
+        insulationMultiplier = insulationMultiplier * (1.0 - stackingStrength * (1.0 - insulation))
+    end
+    return windMultiplier, insulationMultiplier
+end
+
 local function transmissionForLayers(layerCount, profile)
     if layerCount >= 2 then
         local additionalLayers = layerCount - 2
@@ -23,10 +54,7 @@ function ProtectionPolicy.calculate(model)
     for regionName, region in pairs(model.regions) do
         local profile = ProtectionValues.get(regionName)
         local layerTransmission = transmissionForLayers(region.intactLayers, profile)
-        local windProtectionBonus = region.windResistance * profile.maxWindTransmissionReduction
-        local windTransmissionMultiplier = 1.0 - windProtectionBonus
-        local insulationProtectionBonus = region.insulation * profile.maxInsulationTransmissionReduction
-        local insulationTransmissionMultiplier = 1.0 - insulationProtectionBonus
+        local windTransmissionMultiplier, insulationTransmissionMultiplier = transmissionForMaterials(region.materialLayers, profile)
         local nonLayerTransmissionMultiplier = windTransmissionMultiplier
             * insulationTransmissionMultiplier
             * region.itemTransmissionMultiplier

@@ -20,8 +20,10 @@ end
 
 local function addProtection(region, windResistance, insulation, transmissionMultiplier)
     region.intactLayers = region.intactLayers + 1
-    region.windResistance = math.max(region.windResistance, windResistance)
-    region.insulation = math.max(region.insulation, insulation)
+    region.materialLayers[#region.materialLayers + 1] = {
+        windResistance = windResistance,
+        insulation = insulation,
+    }
     region.itemTransmissionMultiplier = region.itemTransmissionMultiplier * transmissionMultiplier
 end
 
@@ -74,10 +76,10 @@ function ClothingSnapshot.capture(player, model)
 
     for regionName, region in pairs(model.regions) do
         region.intactLayers = 0
-        region.windResistance = MIN_WIND_RESISTANCE
-        region.insulation = MIN_INSULATION
+        region.materialLayers = {}
         region.itemTransmissionMultiplier = 1.0
-        local regionIndex = BloodBodyPartType[regionName]:index()
+        local bodyPartType = assert(BloodBodyPartType[regionName], "Unknown sun region body part: " .. regionName)
+        local regionIndex = bodyPartType:index()
         regionsByIndex[regionIndex] = region
     end
 

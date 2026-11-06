@@ -12,8 +12,10 @@
 ---@field oneLayerTransmission number
 ---@field twoLayerTransmission number
 ---@field additionalLayerTransmissionMultiplier number
----@field maxWindTransmissionReduction number
----@field maxInsulationTransmissionReduction number
+---@field windTransmissionMultiplierAtMax number
+---@field insulationTransmissionMultiplierAtMax number
+---@field materialStackingStrengths number[]
+---@field additionalMaterialStackingStrength number
 
 ---@class VargursResolvedSunRegionProfile: VargursSunRegionProfile
 ---@field weight number
@@ -24,7 +26,6 @@
 ---@field regionProfiles table<string, VargursSunRegionProfile?>
 ---@field regions table<string, {weight: number, profile: string}?>
 ---@field get? fun(regionName: string): VargursResolvedSunRegionProfile
----@field getItemOverride? fun(fullType: string): VargursClothingItemOverride
 ---@type VargursClothingProtectionValues
 local ProtectionValues = {
     clothingProfiles = {
@@ -78,35 +79,43 @@ local ProtectionValues = {
     regionProfiles = {
         Standard = {
             uncoveredTransmission = 1.0,
-            oneLayerTransmission = 0.5,
-            twoLayerTransmission = 0.1,
-            additionalLayerTransmissionMultiplier = 0.7,
-            maxWindTransmissionReduction = 0.6,
-            maxInsulationTransmissionReduction = 0.35,
+            oneLayerTransmission = 0.75,
+            twoLayerTransmission = 0.27,
+            additionalLayerTransmissionMultiplier = 0.85,
+            windTransmissionMultiplierAtMax = 0.40,
+            insulationTransmissionMultiplierAtMax = 0.40,
+            materialStackingStrengths = { 1.0, 0.7, 0.5 },
+            additionalMaterialStackingStrength = 0.35,
         },
         StrongCoverage = {
             uncoveredTransmission = 1.0,
-            oneLayerTransmission = 0.05,
-            twoLayerTransmission = 0.01,
-            additionalLayerTransmissionMultiplier = 0.7,
-            maxWindTransmissionReduction = 0.6,
-            maxInsulationTransmissionReduction = 0.25,
+            oneLayerTransmission = 0.35,
+            twoLayerTransmission = 0.23,
+            additionalLayerTransmissionMultiplier = 0.92,
+            windTransmissionMultiplierAtMax = 0.23,
+            insulationTransmissionMultiplierAtMax = 0.23,
+            materialStackingStrengths = { 1.0, 0.7, 0.5 },
+            additionalMaterialStackingStrength = 0.35,
         },
         StrongCoverageHighWindProtection = {
             uncoveredTransmission = 1.0,
-            oneLayerTransmission = 0.07,
-            twoLayerTransmission = 0.01,
-            additionalLayerTransmissionMultiplier = 0.7,
-            maxWindTransmissionReduction = 0.8,
-            maxInsulationTransmissionReduction = 0.35,
+            oneLayerTransmission = 0.45,
+            twoLayerTransmission = 0.28,
+            additionalLayerTransmissionMultiplier = 0.92,
+            windTransmissionMultiplierAtMax = 0.23,
+            insulationTransmissionMultiplierAtMax = 0.23,
+            materialStackingStrengths = { 1.0, 0.7, 0.5 },
+            additionalMaterialStackingStrength = 0.35,
         },
         StrongTwoLayerCoverage = {
             uncoveredTransmission = 1.0,
             oneLayerTransmission = 0.5,
-            twoLayerTransmission = 0.05,
-            additionalLayerTransmissionMultiplier = 0.7,
-            maxWindTransmissionReduction = 0.6,
-            maxInsulationTransmissionReduction = 0.35,
+            twoLayerTransmission = 0.3,
+            additionalLayerTransmissionMultiplier = 0.92,
+            windTransmissionMultiplierAtMax = 0.28,
+            insulationTransmissionMultiplierAtMax = 0.28,
+            materialStackingStrengths = { 1.0, 0.7, 0.5 },
+            additionalMaterialStackingStrength = 0.35,
         },
     },
     regions = {
@@ -146,6 +155,8 @@ function ProtectionValues.get(regionName)
     return profile
 end
 
+---@param fullType string
+---@return VargursClothingItemOverride
 function ProtectionValues.getItemOverride(fullType)
     local itemOverride = ProtectionValues.itemOverrides[fullType] or {}
     local profile = {}

@@ -19,7 +19,7 @@ end
 
 local function normalizeState(state)
     state.vitae = nil
-    state.sunStress = nil
+    state.sunStress = normalizeNumber(state.sunStress, 0.0, 1.0)
     if type(state.sunPainRecovery) ~= "table" then
         state.sunPainRecovery = {}
     end
@@ -43,6 +43,22 @@ end
 
 function State.isVampire(player)
     return VampireTrait.has(player)
+end
+
+function State.getSunStress(player)
+    local data = getModData(player)
+    local state = data and data[Constants.STATE_KEY]
+    if type(state) ~= "table" then
+        return 0.0
+    end
+    return normalizeNumber(state.sunStress, 0.0, 1.0)
+end
+
+function State.setSunStress(player, stress)
+    local state = State.get(player)
+    if state then
+        state.sunStress = normalizeNumber(stress, 0.0, 1.0)
+    end
 end
 
 ---@param regions table<string, SunRegion>

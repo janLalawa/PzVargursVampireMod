@@ -96,12 +96,15 @@ function SunDebugWindow:render()
         formatFactor(environment.protectionMultiplier)), rightColumnX, y)
     y = y + lineHeight
 
+    drawText(self, string.format("Sun stress: %.2f%%  |  Sensitivity: %sx",
+        debug.sunStress * 100.0, formatFactor(debug.stressMultiplier)), 12, y)
+    drawText(self, "Exposure after stress: " .. formatFactor(debug.amplifiedUV), rightColumnX, y)
     y = y + lineHeight + 8
 
     local columns = {
         { label = "Region", width = 145 },
         { label = "Wt", width = 65 },
-        { label = "UV env", width = 92 },
+        { label = "UV pre", width = 92 },
         { label = "Dmg/min", width = 90 },
         { label = "UV cloth", width = 90 },
         { label = "Weighted UV", width = 115 },
@@ -156,7 +159,7 @@ function SunDebugWindow:render()
     local timeToKill = debug.totalDamagePerGameMinute > 0.0
         and string.format("%.2f sec", FULL_HEALTH / debug.totalDamagePerGameMinute * realSecondsPerGameMinute)
         or "n/a"
-    drawText(self, "Full-health time to kill: " .. timeToKill, rightColumnX, y, { r = 0.85, g = 0.72, b = 0.42, a = 1.0 })
+    drawText(self, "Full-health TTK (current rate): " .. timeToKill, rightColumnX, y, { r = 0.85, g = 0.72, b = 0.42, a = 1.0 })
 
 end
 

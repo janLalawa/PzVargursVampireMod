@@ -7,6 +7,8 @@ local SunPainAdapter = require("VargursVampires/PlayerState/SunPainAdapter")
 local Health = require("VargursVampires/PlayerState/Health")
 local SunBurns = require("VargursVampires/Mechanics/Sun/Burns/SunBurns")
 local ConsumptionEffects = require("VargursVampires/Mechanics/Consumption/Effects")
+local SunEnvironment = require("VargursVampires/Mechanics/Sun/SunEnvironment")
+local SunStress = require("VargursVampires/Mechanics/Sun/Stress/SunStress")
 ---@type VargursVampiresNetwork
 local Network = require("VargursVampires/Infrastructure/Network")
 
@@ -36,7 +38,13 @@ local function updateSunExposure(player, state, elapsedMinutes)
         return
     end
 
-    local model = SunExposure.sample(player, state.sunPainRecovery)
+    local config = Config.get()
+    local environment = SunEnvironment.capture(player)
+    if config.sunDamagePerMinute > 0.0 then
+        local environmentalUV = SunExposure.environmentalUV(environment, config.sunEnvironmentalUVMultiplier)
+        State.setSunStress(player, SunStress.update(state.sunStress, environmentalUV, elapsedMinutes))
+    end
+    local model = SunExposure.sample(player, state.sunPainRecovery, false, environment)
     SunEffectCalculator.calculate(model, elapsedMinutes, Config.get(), player:getBodyDamage():getOverallBodyHealth())
     State.setSunPainRecovery(player, model.regions)
     applySunPain(player, model.regions)
@@ -89,6 +97,7 @@ function VampireService.syncPlayer(player)
 
     ConsumptionEffects.syncPlayer(player)
     Health.syncDamage(player)
+    Network.syncSunStress(player)
 end
 
 return VampireService
