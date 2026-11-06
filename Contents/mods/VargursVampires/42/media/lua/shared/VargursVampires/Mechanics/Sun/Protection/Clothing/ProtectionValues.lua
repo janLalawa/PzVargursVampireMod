@@ -13,6 +13,7 @@
 ---@field twoLayerTransmission number
 ---@field additionalLayerTransmissionMultiplier number
 ---@field maxWindTransmissionReduction number
+---@field maxInsulationTransmissionReduction number
 
 ---@class VargursResolvedSunRegionProfile: VargursSunRegionProfile
 ---@field weight number
@@ -81,6 +82,7 @@ local ProtectionValues = {
             twoLayerTransmission = 0.1,
             additionalLayerTransmissionMultiplier = 0.7,
             maxWindTransmissionReduction = 0.6,
+            maxInsulationTransmissionReduction = 0.35,
         },
         StrongCoverage = {
             uncoveredTransmission = 1.0,
@@ -88,6 +90,7 @@ local ProtectionValues = {
             twoLayerTransmission = 0.01,
             additionalLayerTransmissionMultiplier = 0.7,
             maxWindTransmissionReduction = 0.6,
+            maxInsulationTransmissionReduction = 0.25,
         },
         StrongCoverageHighWindProtection = {
             uncoveredTransmission = 1.0,
@@ -95,6 +98,7 @@ local ProtectionValues = {
             twoLayerTransmission = 0.01,
             additionalLayerTransmissionMultiplier = 0.7,
             maxWindTransmissionReduction = 0.8,
+            maxInsulationTransmissionReduction = 0.35,
         },
         StrongTwoLayerCoverage = {
             uncoveredTransmission = 1.0,
@@ -102,6 +106,7 @@ local ProtectionValues = {
             twoLayerTransmission = 0.05,
             additionalLayerTransmissionMultiplier = 0.7,
             maxWindTransmissionReduction = 0.6,
+            maxInsulationTransmissionReduction = 0.35,
         },
     },
     regions = {

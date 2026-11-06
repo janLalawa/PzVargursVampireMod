@@ -4,6 +4,8 @@ local ProtectionValues = require("VargursVampires/Mechanics/Sun/Protection/Cloth
 local ClothingSnapshot = {}
 local MIN_WIND_RESISTANCE = 0.0
 local MAX_WIND_RESISTANCE = 1.0
+local MIN_INSULATION = 0.0
+local MAX_INSULATION = 1.0
 local NO_HOLE = 0.0
 
 local function garmentWindResistance(item)
@@ -11,9 +13,15 @@ local function garmentWindResistance(item)
     return math.max(MIN_WIND_RESISTANCE, math.min(MAX_WIND_RESISTANCE, windResistance))
 end
 
-local function addProtection(region, windResistance, transmissionMultiplier)
+local function garmentInsulation(item)
+    local insulation = item:getInsulation()
+    return math.max(MIN_INSULATION, math.min(MAX_INSULATION, insulation))
+end
+
+local function addProtection(region, windResistance, insulation, transmissionMultiplier)
     region.intactLayers = region.intactLayers + 1
     region.windResistance = math.max(region.windResistance, windResistance)
+    region.insulation = math.max(region.insulation, insulation)
     region.itemTransmissionMultiplier = region.itemTransmissionMultiplier * transmissionMultiplier
 end
 
@@ -31,6 +39,7 @@ local function captureGarment(regionsByIndex, regionsByName, item)
     local override = ProtectionValues.getItemOverride(item:getFullType())
     local transmissionMultiplier = override.transmissionMultiplier or 1.0
     local windResistance = garmentWindResistance(item)
+    local insulation = garmentInsulation(item)
     local coveredRegions = {}
     for partIndex = 0, coveredParts:size() - 1 do
         local bodyPart = coveredParts:get(partIndex)
@@ -38,7 +47,7 @@ local function captureGarment(regionsByIndex, regionsByName, item)
         if region and not coveredRegions[region] then
             coveredRegions[region] = true
             if visual:getHole(bodyPart) == NO_HOLE then
-                addProtection(region, windResistance, transmissionMultiplier)
+                addProtection(region, windResistance, insulation, transmissionMultiplier)
             end
         end
     end
@@ -53,7 +62,7 @@ local function captureGarment(regionsByIndex, regionsByName, item)
         local region = regionsByName[regionName]
         if region and not coveredRegions[region] then
             coveredRegions[region] = true
-            addProtection(region, windResistance, areaTransmissionMultiplier)
+            addProtection(region, windResistance, insulation, areaTransmissionMultiplier)
         end
     end
 end
@@ -66,6 +75,7 @@ function ClothingSnapshot.capture(player, model)
     for regionName, region in pairs(model.regions) do
         region.intactLayers = 0
         region.windResistance = MIN_WIND_RESISTANCE
+        region.insulation = MIN_INSULATION
         region.itemTransmissionMultiplier = 1.0
         local regionIndex = BloodBodyPartType[regionName]:index()
         regionsByIndex[regionIndex] = region

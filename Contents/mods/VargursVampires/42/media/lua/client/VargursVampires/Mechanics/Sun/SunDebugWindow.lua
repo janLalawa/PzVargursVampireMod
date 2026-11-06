@@ -5,7 +5,7 @@ local ProtectionValues = require("VargursVampires/Mechanics/Sun/Protection/Cloth
 local SunExposure = require("VargursVampires/Mechanics/Sun/SunExposure")
 local SunEffectCalculator = require("VargursVampires/Mechanics/Sun/SunEffectCalculator")
 
-local WINDOW_WIDTH = 1180
+local WINDOW_WIDTH = 1500
 local WINDOW_HEIGHT = 720
 local SAMPLE_INTERVAL_MS = 250
 local ROW_HEIGHT = 24
@@ -109,14 +109,20 @@ function SunDebugWindow:render()
         { label = "Lyr", width = 50 },
         { label = "Layer x", width = 80 },
         { label = "Wind x", width = 80 },
+        { label = "Insul x", width = 70 },
         { label = "Item x", width = 80 },
     }
+    local totalColumnWidth = 0
+    for _, column in ipairs(columns) do
+        totalColumnWidth = totalColumnWidth + column.width
+    end
+    local columnGap = math.max(8, math.min(24, (self.width - 24 - totalColumnWidth) / (#columns - 1)))
     local columnX = {}
     local x = 12
     for index, column in ipairs(columns) do
         columnX[index] = x
         drawText(self, column.label, x, y, { r = 0.85, g = 0.72, b = 0.42, a = 1.0 })
-        x = x + column.width + 14
+        x = x + column.width + columnGap
     end
     y = y + lineHeight
 
@@ -134,6 +140,7 @@ function SunDebugWindow:render()
             tostring(region.intactLayers),
             formatFactor(regionDebug.layerTransmission),
             formatFactor(regionDebug.windTransmissionMultiplier),
+            formatFactor(regionDebug.insulationTransmissionMultiplier),
             formatFactor(regionDebug.itemTransmissionMultiplier),
         }
         for index, value in ipairs(values) do
@@ -182,7 +189,7 @@ local function toggleWindow(key)
 
     local screenWidth = getCore():getScreenWidth()
     local screenHeight = getCore():getScreenHeight()
-    local width = math.min(WINDOW_WIDTH, screenWidth - 24)
+    local width = math.min(WINDOW_WIDTH, screenWidth - 12)
     local height = math.min(WINDOW_HEIGHT, screenHeight - 24)
     activeWindow = SunDebugWindow:new((screenWidth - width) / 2, (screenHeight - height) / 2, width, height)
     activeWindow:initialise()

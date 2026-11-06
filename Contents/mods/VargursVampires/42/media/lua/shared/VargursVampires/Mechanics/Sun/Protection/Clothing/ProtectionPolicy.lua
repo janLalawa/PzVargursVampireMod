@@ -25,7 +25,11 @@ function ProtectionPolicy.calculate(model)
         local layerTransmission = transmissionForLayers(region.intactLayers, profile)
         local windProtectionBonus = region.windResistance * profile.maxWindTransmissionReduction
         local windTransmissionMultiplier = 1.0 - windProtectionBonus
-        local nonLayerTransmissionMultiplier = windTransmissionMultiplier * region.itemTransmissionMultiplier
+        local insulationProtectionBonus = region.insulation * profile.maxInsulationTransmissionReduction
+        local insulationTransmissionMultiplier = 1.0 - insulationProtectionBonus
+        local nonLayerTransmissionMultiplier = windTransmissionMultiplier
+            * insulationTransmissionMultiplier
+            * region.itemTransmissionMultiplier
         region.transmission = layerTransmission * nonLayerTransmissionMultiplier
         model.clothingMultiplier = model.clothingMultiplier + region.transmission * region.weight
 
@@ -33,6 +37,7 @@ function ProtectionPolicy.calculate(model)
             region.debug = {
                 layerTransmission = layerTransmission,
                 windTransmissionMultiplier = windTransmissionMultiplier,
+                insulationTransmissionMultiplier = insulationTransmissionMultiplier,
                 itemTransmissionMultiplier = region.itemTransmissionMultiplier,
             }
         end
