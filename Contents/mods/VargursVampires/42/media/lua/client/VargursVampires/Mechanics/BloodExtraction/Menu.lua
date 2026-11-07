@@ -36,7 +36,6 @@ local function onFillWorldObjectContextMenu(playerIndex, context, worldobjects, 
         or not State.isVampire(player)
         or not corpse
         or not instanceof(corpse, "IsoDeadBody")
-        or not corpse:isZombie()
     then
         return
     end

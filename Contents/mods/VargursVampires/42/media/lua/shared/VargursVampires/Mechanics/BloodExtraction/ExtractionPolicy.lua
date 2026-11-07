@@ -1,16 +1,36 @@
 local Config = require("VargursVampires/Infrastructure/Config")
 local State = require("VargursVampires/PlayerState/State")
+local ExtractionValues = require("VargursVampires/Mechanics/BloodExtraction/ExtractionValues")
 
 local ExtractionPolicy = {
-    fluidType = "VargursZombieBlood",
     extractedKey = "VargursVampiresBloodExtracted",
     freshnessHours = 2.0,
-    minimumYield = 0.15,
-    maximumYield = 0.25,
     duration = 180,
 }
 
 local VOLUME_EPSILON = 0.000001
+
+---@param corpse IsoDeadBody
+---@return VargursBloodExtractionProfile
+function ExtractionPolicy.profile(corpse)
+    if corpse:isAnimal() then
+        return ExtractionValues.animals[corpse:getAnimalType()] or ExtractionValues.animalDefault
+    end
+    local data = corpse:getModData()
+    if (type(data.ProjectALifeCorpseOf) == "string" and data.ProjectALifeCorpseOf ~= "")
+        or data.ProjectALifeOwned == true or not corpse:isZombie() then
+        return ExtractionValues.human
+    end
+    return ExtractionValues.zombie
+end
+
+local function animalBloodQuantity(corpse)
+    local quantity = corpse:getModData().BloodQty
+    if type(quantity) ~= "number" or quantity ~= quantity or quantity < 0.0 or quantity == math.huge then
+        return nil
+    end
+    return quantity
+end
 
 function ExtractionPolicy.isTool(item)
     return item and item:getCondition() > 0 and item:hasTag(ItemTag.SHARP_KNIFE)
@@ -20,11 +40,17 @@ function ExtractionPolicy.corpseReason(corpse)
     if not corpse or not instanceof(corpse, "IsoDeadBody") or corpse:getStaticMovingObjectIndex() < 0 or not corpse:getSquare() then
         return "Corpse"
     end
-    if not corpse:isZombie() or corpse:isAnimal() or corpse:isSkeleton() or corpse:isFakeDead() or corpse:getSquare():haveFire() then
+    if corpse:isSkeleton() or corpse:isFakeDead() or corpse:getSquare():haveFire() then
         return "Corpse"
     end
     if corpse:getModData()[ExtractionPolicy.extractedKey] then
         return "Extracted"
+    end
+    if corpse:isAnimal() then
+        local quantity = animalBloodQuantity(corpse)
+        if quantity and quantity <= VOLUME_EPSILON then
+            return "Depleted"
+        end
     end
 
     local deathTime = corpse:getDeathTime()
@@ -34,9 +60,9 @@ function ExtractionPolicy.corpseReason(corpse)
     end
 end
 
-function ExtractionPolicy.containerReason(item)
+function ExtractionPolicy.containerReason(item, fluidType)
     local container = item and item:getFluidContainer()
-    local fluid = Fluid.Get(ExtractionPolicy.fluidType)
+    local fluid = Fluid.Get(fluidType or ExtractionValues.zombie.fluidType)
 
     if not container or item:isSealed() or not fluid or not container:canAddFluid(fluid) then
         return "Container"
@@ -76,7 +102,7 @@ function ExtractionPolicy.canExtract(player, corpse, container, tool, requireRea
         return false, "Container"
     end
 
-    local containerReason = ExtractionPolicy.containerReason(container)
+    local containerReason = ExtractionPolicy.containerReason(container, ExtractionPolicy.profile(corpse).fluidType)
     if containerReason then
         return false, containerReason
     end
@@ -105,16 +131,22 @@ function ExtractionPolicy.extract(player, corpse, item, tool)
 
     local container = item:getFluidContainer()
     local before = container:getAmount()
-    local amount = ZombRand(ExtractionPolicy.minimumYield * 100, ExtractionPolicy.maximumYield * 100 + 1) / 100.0
+    local profile = ExtractionPolicy.profile(corpse)
+    local animalBlood = corpse:isAnimal() and animalBloodQuantity(corpse) or nil
+    local amount = animalBlood or ZombRand(profile.minimumYield * 100, profile.maximumYield * 100 + 1) / 100.0
     amount = math.min(amount, container:getFreeCapacity())
-    container:addFluid(Fluid.Get(ExtractionPolicy.fluidType), amount)
+    container:addFluid(Fluid.Get(profile.fluidType), amount)
 
     local added = container:getAmount() - before
     if added <= VOLUME_EPSILON then
         return false, "Container"
     end
 
-    corpse:getModData()[ExtractionPolicy.extractedKey] = true
+    local data = corpse:getModData()
+    if animalBlood then
+        data.BloodQty = math.max(0.0, animalBlood - added)
+    end
+    data[ExtractionPolicy.extractedKey] = true
     corpse:transmitModData()
     item:sendSyncEntity(nil)
 
