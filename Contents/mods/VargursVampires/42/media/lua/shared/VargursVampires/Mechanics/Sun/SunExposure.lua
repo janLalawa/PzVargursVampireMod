@@ -8,8 +8,17 @@ local State = require("VargursVampires/PlayerState/State")
 ---@class VargursSunExposurePolicy
 ---@field environmentalUV fun(environment: SunEnvironmentSnapshot, environmentalUVMultiplier: number): number
 ---@field calculate fun(environment: SunEnvironmentSnapshot, model: PlayerSunModel, environmentalUVMultiplier: number, stress?: number): PlayerSunModel
+---@field captureInputs fun(player: any, previousPain?: table, includeDebug?: boolean): SunExposureInputs
+---@field sampleWithInputs fun(player: any, inputs: SunExposureInputs): PlayerSunModel
 ---@field sample fun(player: any, previousPain?: table, includeDebug?: boolean, capturedEnvironment?: SunEnvironmentSnapshot): PlayerSunModel
 ---@field totalWeightedUV fun(player: any): number
+---@class SunExposureInputs
+---@field environment SunEnvironmentSnapshot
+---@field environmentDebug? SunEnvironmentDebugSnapshot
+---@field config {sunEnvironmentalUVMultiplier: number}
+---@field stress? number
+---@field previousPain? table
+---@field includeDebug? boolean
 local SunExposure = {}
 
 local function boundedUV(value)
@@ -61,28 +70,53 @@ function SunExposure.calculate(environment, model, environmentalUVMultiplier, st
     return model
 end
 
----@return PlayerSunModel
-function SunExposure.sample(player, previousPain, includeDebug, capturedEnvironment)
+local function captureInputs(player, previousPain, includeDebug, capturedEnvironment)
     local environment, environmentDebug
     if capturedEnvironment and not includeDebug then
         environment = capturedEnvironment
     else
         environment, environmentDebug = SunEnvironment.capture(player, includeDebug)
     end
-    local model = ClothingPolicy.sample(player, previousPain, includeDebug)
-    if model.debug then
-        model.debug.environment = environmentDebug
-    end
     local config = Config.get()
     local stress
     if player and config.enabled and config.sunDamageEnabled and config.sunDamagePerMinute > 0.0 and State.isVampire(player) then
         stress = State.getSunStress(player)
     end
-    return SunExposure.calculate(environment, model, config.sunEnvironmentalUVMultiplier, stress)
+    return {
+        environment = environment,
+        environmentDebug = environmentDebug,
+        config = config,
+        stress = stress,
+        previousPain = previousPain,
+        includeDebug = includeDebug,
+    }
+end
+
+function SunExposure.captureInputs(player, previousPain, includeDebug)
+    return captureInputs(player, previousPain, includeDebug)
+end
+
+---@param inputs SunExposureInputs
+---@return PlayerSunModel
+function SunExposure.sampleWithInputs(player, inputs)
+    if inputs.includeDebug then
+        assert(inputs.environmentDebug, "Sun environment debug snapshot expected")
+    end
+    local model = ClothingPolicy.sample(player, inputs.previousPain, inputs.includeDebug)
+    if model.debug then
+        model.debug.environment = inputs.environmentDebug
+    end
+    return SunExposure.calculate(inputs.environment, model, inputs.config.sunEnvironmentalUVMultiplier, inputs.stress)
+end
+
+---@return PlayerSunModel
+function SunExposure.sample(player, previousPain, includeDebug, capturedEnvironment)
+    local inputs = captureInputs(player, previousPain, includeDebug, capturedEnvironment)
+    return SunExposure.sampleWithInputs(player, inputs)
 end
 
 function SunExposure.totalWeightedUV(player)
-    return SunExposure.sample(player).totalWeightedUV
+    return SunExposure.sampleWithInputs(player, SunExposure.captureInputs(player)).totalWeightedUV
 end
 
 return SunExposure

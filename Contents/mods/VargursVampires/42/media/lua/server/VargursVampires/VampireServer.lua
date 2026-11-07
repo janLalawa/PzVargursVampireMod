@@ -48,10 +48,11 @@ local function onTick()
     local gameTime = getGameTime()
     local elapsedMinutes = gameTime:getGameWorldSecondsSinceLastUpdate() / SECONDS_PER_MINUTE
     eachOnlinePlayer(function(player)
+        local exposure
         if elapsedMinutes > 0.0 then
-            VampireService.updatePlayer(player, elapsedMinutes)
+            exposure = VampireService.updatePlayer(player, elapsedMinutes)
         end
-        HealthRegeneration.updatePlayer(player)
+        HealthRegeneration.updatePlayer(player, exposure)
         CorpseSicknessResistance.updatePlayer(player)
     end)
 

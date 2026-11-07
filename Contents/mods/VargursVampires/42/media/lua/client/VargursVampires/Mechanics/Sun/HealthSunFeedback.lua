@@ -60,7 +60,8 @@ local function getFeedback(panel)
 
     local config = Config.get()
     local burningUV, searingUV = sensationThresholds(config)
-    local model = SunExposure.sample(patient)
+    local inputs = SunExposure.captureInputs(patient)
+    local model = SunExposure.sampleWithInputs(patient, inputs)
     local levelsByRegion = {}
     for regionName, region in pairs(model.regions) do
         if region.effectiveUV >= searingUV then

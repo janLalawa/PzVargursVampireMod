@@ -47,7 +47,9 @@ function SunDebugWindow:prerender()
     end
 
     self.nextSampleAt = now + SAMPLE_INTERVAL_MS
-    self.model = SunExposure.sample(getSpecificPlayer(0), nil, true)
+    local player = getSpecificPlayer(0)
+    local inputs = SunExposure.captureInputs(player, nil, true)
+    self.model = SunExposure.sampleWithInputs(player, inputs)
     SunEffectCalculator.calculateRates(self.model, Config.get())
 end
 

@@ -30,7 +30,8 @@ local function sampleIntensity(feedback, elapsedSeconds)
         return false
     end
 
-    local totalWeightedUV = SunExposure.sample(feedback.player).totalWeightedUV
+    local inputs = SunExposure.captureInputs(feedback.player)
+    local totalWeightedUV = SunExposure.sampleWithInputs(feedback.player, inputs).totalWeightedUV
     local normalizedUV = math.max(0.0, math.min(1.0, totalWeightedUV / Constants.SUN_EXPOSURE_FEEDBACK_REFERENCE))
     feedback.intensity = math.sqrt(normalizedUV)
     feedback.secondsUntilSample = SAMPLE_INTERVAL_SECONDS

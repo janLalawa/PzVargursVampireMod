@@ -44,17 +44,23 @@ local function updateSunExposure(player, state, elapsedMinutes)
         local environmentalUV = SunExposure.environmentalUV(environment, config.sunEnvironmentalUVMultiplier)
         State.setSunStress(player, SunStress.update(state.sunStress, environmentalUV, elapsedMinutes))
     end
-    local model = SunExposure.sample(player, state.sunPainRecovery, false, environment)
-    SunEffectCalculator.calculate(model, elapsedMinutes, Config.get(), player:getBodyDamage():getOverallBodyHealth())
+    local model = SunExposure.sampleWithInputs(player, {
+        environment = environment,
+        config = config,
+        stress = config.sunDamagePerMinute > 0.0 and state.sunStress or nil,
+        previousPain = state.sunPainRecovery,
+    })
+    SunEffectCalculator.calculate(model, elapsedMinutes, config, player:getBodyDamage():getOverallBodyHealth())
     State.setSunPainRecovery(player, model.regions)
     applySunPain(player, model.regions)
 
     Health.applyRegionalDamage(player, model.regions)
-    if Config.get().sunDamagePerMinute > 0.0 then
+    if config.sunDamagePerMinute > 0.0 then
         SunBurns.updateExposureBurns(player, model, elapsedMinutes)
     else
         SunBurns.clear(player)
     end
+    return model
 end
 
 function VampireService.initializePlayer(player)
@@ -87,7 +93,7 @@ function VampireService.updatePlayer(player, elapsedMinutes)
         return
     end
 
-    updateSunExposure(player, state, elapsedMinutes)
+    return updateSunExposure(player, state, elapsedMinutes)
 end
 
 function VampireService.syncPlayer(player)

@@ -2,16 +2,16 @@ local ProtectionValues = require("VargursVampires/Mechanics/Sun/Protection/Cloth
 
 ---@class SunRegion
 ---@field debug SunRegionDebug|nil
----@field intactLayers number
----@field materialLayers SunMaterialLayer[]
----@field itemTransmissionMultiplier number
+---@field intactLayers number Populated by the clothing snapshot.
+---@field materialLayers SunMaterialLayer[] Populated by the clothing snapshot.
+---@field itemTransmissionMultiplier number Populated by the clothing snapshot.
 ---@field weight number
----@field transmission number
----@field effectiveUV number
----@field weightedUV number
----@field pain number
----@field damage number
----@field damagePerMinute number
+---@field transmission number Calculated by the clothing policy.
+---@field effectiveUV number Calculated by the exposure policy.
+---@field weightedUV number Calculated by the exposure policy.
+---@field pain number Restored from prior state and updated by the effects calculation.
+---@field damage number Calculated by the effects calculation.
+---@field damagePerMinute number Calculated by the effects calculation.
 
 ---@class SunMaterialLayer
 ---@field windResistance number
@@ -34,9 +34,9 @@ local ProtectionValues = require("VargursVampires/Mechanics/Sun/Protection/Cloth
 
 ---@class PlayerSunModel
 ---@field regions table<string, SunRegion>
----@field totalWeightedUV number
+---@field totalWeightedUV number Calculated by the exposure policy.
 ---@field debug SunExposureDebug|nil
----@field clothingMultiplier number
+---@field clothingMultiplier number Calculated by the clothing policy.
 
 local SunModel = {}
 

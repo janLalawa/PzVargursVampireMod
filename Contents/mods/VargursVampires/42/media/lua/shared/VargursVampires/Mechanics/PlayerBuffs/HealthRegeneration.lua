@@ -31,7 +31,8 @@ local function applyRates(bodyDamage, rates, multiplier)
 end
 
 ---@param player IsoPlayer|nil
-function HealthRegeneration.updatePlayer(player)
+---@param exposure? PlayerSunModel
+function HealthRegeneration.updatePlayer(player, exposure)
     if not player then
         return
     end
@@ -48,8 +49,11 @@ function HealthRegeneration.updatePlayer(player)
             modData[BASELINE_KEY] = baseline
         end
         local multiplier = config.vampireHealthRegenMultiplier
-        if config.sunDamageEnabled and config.sunDamagePerMinute > 0.0 and SunExposure.totalWeightedUV(player) > 0.0 then
-            multiplier = 0.0
+        if config.sunDamageEnabled and config.sunDamagePerMinute > 0.0 then
+            local totalWeightedUV = exposure and exposure.totalWeightedUV or SunExposure.totalWeightedUV(player)
+            if totalWeightedUV > 0.0 then
+                multiplier = 0.0
+            end
         end
         applyRates(bodyDamage, baseline, multiplier)
     elseif baseline ~= nil then
