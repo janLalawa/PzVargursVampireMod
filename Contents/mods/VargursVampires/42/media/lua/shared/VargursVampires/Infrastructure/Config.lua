@@ -14,7 +14,7 @@ local defaults = {
     sunDaylightCurveExponent = 0.5,
     sunNoonIntensityBonus = 0.4,
     sunNoonIntensityWidthHours = 0.6,
-    sunDamagePerMinute = 18,
+    sunDamagePerMinute = 25,
 }
 
 ---@type table<integer, table<string, number>?>

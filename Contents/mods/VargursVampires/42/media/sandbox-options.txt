@@ -141,7 +141,7 @@ option VargursVampires.SunDamagePerMinute
     type = double,
     min = 0.0,
     max = 150.0,
-    default = 18.0,
+    default = 25.0,
     page = VargursVampires,
     translation = VargursVampires_SunDamagePerMinute,
 }

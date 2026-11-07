@@ -1,5 +1,7 @@
 local ConsumptionEffects = {}
 local Health = require("VargursVampires/PlayerState/Health")
+local State = require("VargursVampires/PlayerState/State")
+local Network = require("VargursVampires/Infrastructure/Network")
 local IRON_GUT_TRAIT = CharacterTrait.IRON_GUT
 local WEAK_STOMACH_TRAIT = CharacterTrait.WEAK_STOMACH
 ---@type table<IsoPlayer, table<string, boolean>|nil>
@@ -48,12 +50,22 @@ function ConsumptionEffects.accumulate(changes, profile, amount)
 
     changes.generalHealthChange = (changes.generalHealthChange or 0.0) + (profile.generalHealthChange or 0.0) * amount
     changes.painReduction = (changes.painReduction or 0.0) + (profile.painReduction or 0.0) * amount
+    changes.sunStressChange = (changes.sunStressChange or 0.0) + (profile.sunStressChange or 0.0) * amount
 end
 
 ---@param player IsoPlayer
 ---@param changes table<string, number>
 ---@param amount number|nil
 function ConsumptionEffects.apply(player, changes, amount)
+    local sunStressChange = (changes.sunStressChange or 0.0) * (amount or 1.0)
+    if sunStressChange ~= 0.0 and State.isVampire(player) then
+        local previousStress = State.getSunStress(player)
+        State.setSunStress(player, previousStress + sunStressChange)
+        if State.getSunStress(player) ~= previousStress then
+            Network.syncSunStress(player)
+        end
+    end
+
     local stats = player:getStats()
     for field, statId in pairs(statIds) do
         local change = (changes[field] or 0.0) * (amount or 1.0)

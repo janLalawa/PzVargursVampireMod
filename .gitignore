@@ -56,3 +56,7 @@ Save/
 build/
 dist/
 *.zip
+
+# Balance tools
+/tools/*
+/ClothingExports/
