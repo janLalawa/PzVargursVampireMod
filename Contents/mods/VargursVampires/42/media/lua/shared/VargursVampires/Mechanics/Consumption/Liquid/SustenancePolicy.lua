@@ -44,19 +44,19 @@ local function fluidAmounts(container, fluids)
     return amounts
 end
 
----@param action ISDrinkFluidAction
+---@param player IsoPlayer
+---@param container FluidContainer
 ---@param vanillaDrink fun():any
 ---@return any
-function LiquidPolicy.consume(action, vanillaDrink)
-    local player = action.character
+function LiquidPolicy.consumeFluid(player, container, vanillaDrink)
     if (isClient() and not isServer()) or not State.isVampire(player) then
         return vanillaDrink()
     end
 
     local fluids = getSustainedFluids()
-    local before = fluidAmounts(action.fluidContainer, fluids)
+    local before = fluidAmounts(container, fluids)
     local result = vanillaDrink()
-    local after = fluidAmounts(action.fluidContainer, fluids)
+    local after = fluidAmounts(container, fluids)
     local effects = {}
 
     for _, entry in ipairs(fluids) do
@@ -73,6 +73,13 @@ function LiquidPolicy.consume(action, vanillaDrink)
     end
 
     return result
+end
+
+---@param action ISDrinkFluidAction
+---@param vanillaDrink fun():any
+---@return any
+function LiquidPolicy.consume(action, vanillaDrink)
+    return LiquidPolicy.consumeFluid(action.character, action.fluidContainer, vanillaDrink)
 end
 
 return LiquidPolicy

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animNode>
+    <m_Name>VargursVampiresFeed</m_Name>
+    <m_AnimName>Zombie_IdleEating</m_AnimName>
+    <m_Looped>true</m_Looped>
+    <m_BlendTime>0.50</m_BlendTime>
+    <m_SpeedScale>1.0</m_SpeedScale>
+    <m_SyncTrackingEnabled>false</m_SyncTrackingEnabled>
+    <m_useDeferredMovement>false</m_useDeferredMovement>
+    <m_Conditions>
+        <m_Name>PerformingAction</m_Name>
+        <m_Type>STRING</m_Type>
+        <m_Value>VargursVampiresFeed</m_Value>
+    </m_Conditions>
+    <m_SubStateBoneWeights>
+        <boneName>Dummy01</boneName>
+    </m_SubStateBoneWeights>
+    <m_SubStateBoneWeights>
+        <boneName>Translation_Data</boneName>
+    </m_SubStateBoneWeights>
+</animNode>

@@ -5,6 +5,7 @@ local Config = require("VargursVampires/Infrastructure/Config")
 local State = require("VargursVampires/PlayerState/State")
 local ExtractionPolicy = require("VargursVampires/Mechanics/BloodExtraction/ExtractionPolicy")
 local ExtractionAction = require("VargursVampires/Mechanics/BloodExtraction/ExtractionAction")
+local FeedingAction = require("VargursVampires/Mechanics/BloodExtraction/FeedingAction")
 ---@type fun(key: string, ...: any): string
 local text = getText
 
@@ -18,6 +19,12 @@ end
 local function onExtract(player, corpse, container, tool)
     if ExtractionPolicy.canExtract(player, corpse, container, tool) and luautils.walkAdj(player, corpse:getSquare()) then
         ISTimedActionQueue.add(ExtractionAction:new(player, corpse, container, tool))
+    end
+end
+
+local function onFeed(player, corpse)
+    if ExtractionPolicy.canFeed(player, corpse) and luautils.walkAdj(player, corpse:getSquare()) then
+        ISTimedActionQueue.add(FeedingAction:new(player, corpse))
     end
 end
 
@@ -41,6 +48,13 @@ local function onFillWorldObjectContextMenu(playerIndex, context, worldobjects, 
     end
     if test then
         return ISWorldObjectContextMenu.setTest()
+    end
+
+    local feedOption = context:addOption(text("UI_VargursVampires_BloodExtraction_Feed"), player, onFeed, corpse)
+    ISWorldObjectContextMenu.initWorldItemHighlightOption(feedOption, corpse)
+    local canFeed, feedReason = ExtractionPolicy.canFeed(player, corpse)
+    if not canFeed then
+        disable(feedOption, feedReason)
     end
 
     local option = context:addOption(text("UI_VargursVampires_BloodExtraction_Extract"), nil)

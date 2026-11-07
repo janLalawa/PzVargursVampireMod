@@ -1,11 +1,13 @@
 local Config = require("VargursVampires/Infrastructure/Config")
 local State = require("VargursVampires/PlayerState/State")
 local ExtractionValues = require("VargursVampires/Mechanics/BloodExtraction/ExtractionValues")
+local LiquidPolicy = require("VargursVampires/Mechanics/Consumption/Liquid/SustenancePolicy")
 
 local ExtractionPolicy = {
     extractedKey = "VargursVampiresBloodExtracted",
     freshnessHours = 2.0,
-    duration = 180,
+    duration = 600,
+    maximumFeedAmount = 1.0,
 }
 
 local VOLUME_EPSILON = 0.000001
@@ -80,7 +82,7 @@ function ExtractionPolicy.containerReason(item, fluidType)
     end
 end
 
-function ExtractionPolicy.canExtract(player, corpse, container, tool, requireReach)
+local function canAccessCorpse(player, corpse, requireReach)
     if not Config.get().enabled or not player or player:isDead() or player:getVehicle() then
         return false, "Player"
     end
@@ -90,6 +92,35 @@ function ExtractionPolicy.canExtract(player, corpse, container, tool, requireRea
 
     local reason = ExtractionPolicy.corpseReason(corpse)
     if reason then
+        return false, reason
+    end
+
+    if requireReach then
+        local deltaX = player:getX() - corpse:getX()
+        local deltaY = player:getY() - corpse:getY()
+        local square = player:getSquare()
+        if not square or player:getZ() ~= corpse:getZ() or deltaX * deltaX + deltaY * deltaY > 4.0 or not square:canReachTo(corpse:getSquare()) then
+            return false, "Distance"
+        end
+    end
+
+    return true
+end
+
+function ExtractionPolicy.canFeed(player, corpse, requireReach)
+    local valid, reason = canAccessCorpse(player, corpse, requireReach)
+    if not valid then
+        return false, reason
+    end
+    if player:getMoodles():getMoodleLevel(MoodleType.FOOD_EATEN) >= 3 then
+        return false, "Full"
+    end
+    return true
+end
+
+function ExtractionPolicy.canExtract(player, corpse, container, tool, requireReach)
+    local valid, reason = canAccessCorpse(player, corpse, false)
+    if not valid then
         return false, reason
     end
 
@@ -108,15 +139,26 @@ function ExtractionPolicy.canExtract(player, corpse, container, tool, requireRea
     end
 
     if requireReach then
-        local deltaX = player:getX() - corpse:getX()
-        local deltaY = player:getY() - corpse:getY()
-        local square = player:getSquare()
-        if not square or player:getZ() ~= corpse:getZ() or deltaX * deltaX + deltaY * deltaY > 4.0 or not square:canReachTo(corpse:getSquare()) then
-            return false, "Distance"
-        end
+        return canAccessCorpse(player, corpse, true)
     end
 
     return true
+end
+
+local function bloodAmount(corpse, profile, capacity)
+    local animalBlood = corpse:isAnimal() and animalBloodQuantity(corpse) or nil
+    local amount = animalBlood and ZombRandFloat(animalBlood * 0.1, animalBlood)
+        or ZombRand(profile.minimumYield * 100, profile.maximumYield * 100 + 1) / 100.0
+    return math.min(amount, capacity), animalBlood
+end
+
+local function markExtracted(corpse, animalBlood, amount)
+    local data = corpse:getModData()
+    if animalBlood then
+        data.BloodQty = math.max(0.0, animalBlood - amount)
+    end
+    data[ExtractionPolicy.extractedKey] = true
+    corpse:transmitModData()
 end
 
 function ExtractionPolicy.extract(player, corpse, item, tool)
@@ -132,9 +174,7 @@ function ExtractionPolicy.extract(player, corpse, item, tool)
     local container = item:getFluidContainer()
     local before = container:getAmount()
     local profile = ExtractionPolicy.profile(corpse)
-    local animalBlood = corpse:isAnimal() and animalBloodQuantity(corpse) or nil
-    local amount = animalBlood or ZombRand(profile.minimumYield * 100, profile.maximumYield * 100 + 1) / 100.0
-    amount = math.min(amount, container:getFreeCapacity())
+    local amount, animalBlood = bloodAmount(corpse, profile, container:getFreeCapacity())
     container:addFluid(Fluid.Get(profile.fluidType), amount)
 
     local added = container:getAmount() - before
@@ -142,15 +182,48 @@ function ExtractionPolicy.extract(player, corpse, item, tool)
         return false, "Container"
     end
 
-    local data = corpse:getModData()
-    if animalBlood then
-        data.BloodQty = math.max(0.0, animalBlood - added)
-    end
-    data[ExtractionPolicy.extractedKey] = true
-    corpse:transmitModData()
+    markExtracted(corpse, animalBlood, added)
     item:sendSyncEntity(nil)
 
     return true, added
+end
+
+function ExtractionPolicy.feed(player, corpse)
+    if isClient() and not isServer() then
+        return false
+    end
+    local valid, reason = ExtractionPolicy.canFeed(player, corpse, true)
+    if not valid then
+        return false, reason
+    end
+
+    local profile = ExtractionPolicy.profile(corpse)
+    local fluid = Fluid.Get(profile.fluidType)
+    if not fluid then
+        return false, "Container"
+    end
+    local amount, animalBlood = bloodAmount(corpse, profile, ExtractionPolicy.maximumFeedAmount)
+    local container = FluidContainer.CreateContainer()
+    local before = 0.0
+    local ok, failure = pcall(function()
+        container:setCapacity(amount)
+        container:addFluid(fluid, amount)
+        before = container:getAmount()
+        if before > VOLUME_EPSILON then
+            LiquidPolicy.consumeFluid(player, container, function()
+                return player:DrinkFluid(container, 1.0, false)
+            end)
+        end
+    end)
+    local consumed = math.max(0.0, before - container:getAmount())
+    FluidContainer.DisposeContainer(container)
+    if consumed > VOLUME_EPSILON then
+        markExtracted(corpse, animalBlood, consumed)
+    end
+    if not ok then
+        error(failure)
+    end
+    return consumed > VOLUME_EPSILON, consumed
 end
 
 return ExtractionPolicy
