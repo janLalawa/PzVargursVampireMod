@@ -183,7 +183,7 @@ function ExtractionPolicy.extract(player, corpse, item, tool)
     end
 
     markExtracted(corpse, animalBlood, added)
-    item:sendSyncEntity(nil)
+    item:syncItemFields()
 
     return true, added
 end
