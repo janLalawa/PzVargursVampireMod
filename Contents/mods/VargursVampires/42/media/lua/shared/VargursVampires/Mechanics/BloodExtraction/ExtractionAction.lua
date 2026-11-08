@@ -10,8 +10,6 @@ local text = getText
 ---@field container InventoryItem?
 ---@field tool InventoryItem?
 ---@field started boolean?
----@field pourStarted boolean
----@field sound integer?
 VargursVampiresExtractionAction = ISBaseTimedAction:derive("VargursVampiresExtractionAction")
 VargursVampiresExtractionAction = ISBaseTimedAction:derive("VargursVampiresExtractionAction")
 
@@ -56,19 +54,9 @@ function VargursVampiresExtractionAction:update()
     if self.container then
         self.container:setJobDelta(self:getJobDelta())
     end
-
-    if not self.pourStarted and self:getJobDelta() >= 0.7 then
-        self.pourStarted = true
-        self.sound = self.character:playSound("PourWaterIntoObject")
-    end
 end
 
 function VargursVampiresExtractionAction:cleanup()
-    if self.sound then
-        self.character:stopOrTriggerSound(self.sound)
-        self.sound = nil
-    end
-
     if self.container then
         self.container:setJobDelta(0.0)
         self.container:setJobType("")
@@ -120,7 +108,6 @@ function VargursVampiresExtractionAction:new(character, corpse, container, tool)
     action.stopOnWalk = true
     action.stopOnRun = true
     action.stopOnAim = true
-    action.pourStarted = false
     action.maxTime = action:getDuration()
     return action
 end
