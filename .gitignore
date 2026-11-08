@@ -60,3 +60,4 @@ dist/
 # Balance tools
 /tools/*
 /ClothingExports/
+/tests/
