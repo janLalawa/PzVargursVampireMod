@@ -29,7 +29,7 @@
     "Sandbox_VargursVampires_SunEnvironmentalUVMultiplier": "Multiplikator der Umgebungs-UV-Strahlung",
     "Sandbox_VargursVampires_SunEnvironmentalUVMultiplier_tooltip": "Skaliert das Sonnenlicht der Umgebung nach Ber\u00fccksichtigung von Wetter, Position und Fahrzeugschutz, aber vor Kleidung und dem lokalen UV-Schwellenwert. 1.1 bedeutet beispielsweise 10 Prozent st\u00e4rker. Standard: 1",
     "Sandbox_VargursVampires_SunDaylightCurveExponent": "Exponent der Tageslichtintensit\u00e4tskurve",
-    "Sandbox_VargursVampires_SunDaylightCurveExponent_tooltip": "Niedrigere Werte lassen die Belastung w\u00e4hrend der Morgen- und Abendd\u00e4mmerung schneller ansteigen. Standard: 0.5.",
+    "Sandbox_VargursVampires_SunDaylightCurveExponent_tooltip": "Niedrigere Werte lassen die Belastung w\u00e4hrend der Morgen- und Abendd\u00e4mmerung schneller ansteigen. Standard: 2.",
     "Sandbox_VargursVampires_SunNoonIntensityBonus": "Zus\u00e4tzliche Sonnenintensit\u00e4t zur Mittagszeit",
     "Sandbox_VargursVampires_SunNoonIntensityBonus_tooltip": "Zus\u00e4tzliche Sonnenlichtintensit\u00e4t rund um den Sonnenh\u00f6chststand. Standard: 0.4.",
     "Sandbox_VargursVampires_SunNoonIntensityWidthHours": "Dauer der verst\u00e4rkten Mittagssonne (Stunden)",

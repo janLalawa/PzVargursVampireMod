@@ -29,7 +29,7 @@
     "Sandbox_VargursVampires_SunEnvironmentalUVMultiplier": "環境紫外線倍率",
     "Sandbox_VargursVampires_SunEnvironmentalUVMultiplier_tooltip": "天候、位置、車両による保護を反映した後、衣服と局所的な紫外線のしきい値を適用する前の環境日光強度を調整します。例えば1.1では10パーセント強くなります。初期値: 1",
     "Sandbox_VargursVampires_SunDaylightCurveExponent": "日光強度曲線の指数",
-    "Sandbox_VargursVampires_SunDaylightCurveExponent_tooltip": "値が低いほど、夜明けと夕暮れの時間帯に日光の影響が早く強まります。初期値: 0.5。",
+    "Sandbox_VargursVampires_SunDaylightCurveExponent_tooltip": "値が低いほど、夜明けと夕暮れの時間帯に日光の影響が早く強まります。初期値: 2。",
     "Sandbox_VargursVampires_SunNoonIntensityBonus": "正午前後の日光強度の追加量",
     "Sandbox_VargursVampires_SunNoonIntensityBonus_tooltip": "太陽が最も高くなる時刻を中心に追加される日光強度です。初期値: 0.4。",
     "Sandbox_VargursVampires_SunNoonIntensityWidthHours": "正午前後の日光強化の時間幅（時間）",

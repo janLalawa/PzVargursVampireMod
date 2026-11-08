@@ -29,7 +29,7 @@
     "Sandbox_VargursVampires_SunEnvironmentalUVMultiplier": "Environmental UV Multiplier",
     "Sandbox_VargursVampires_SunEnvironmentalUVMultiplier_tooltip": "Scales environmental sunlight after weather, position, and vehicle protection, before clothing and the local UV cutoff. 1.1 for example is 10 percent stronger. Default: 1",
     "Sandbox_VargursVampires_SunDaylightCurveExponent": "Daylight Intensity Curve Exponent",
-    "Sandbox_VargursVampires_SunDaylightCurveExponent_tooltip": "Lower values ramp up exposure faster during dawn and dusk. Default: 0.5.",
+    "Sandbox_VargursVampires_SunDaylightCurveExponent_tooltip": "Lower values ramp up exposure faster during dawn and dusk. Default: 2.",
     "Sandbox_VargursVampires_SunNoonIntensityBonus": "Additional Noon Sun Intensity",
     "Sandbox_VargursVampires_SunNoonIntensityBonus_tooltip": "Extra sunlight intensity centered on solar noon. Default: 0.4.",
     "Sandbox_VargursVampires_SunNoonIntensityWidthHours": "Noon Sun Intensity Width (Hours)",

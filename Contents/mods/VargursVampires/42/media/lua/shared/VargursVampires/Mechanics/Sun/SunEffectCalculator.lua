@@ -5,11 +5,10 @@ local SunEffectCalculator = {}
 
 function SunEffectCalculator.damageUV(localUV, damageCurve)
     local exponent = damageCurve and damageCurve.exponent or Constants.SUN_DAMAGE_CURVE_EXPONENT
-    local crossoverUV = damageCurve and damageCurve.referenceUV or Constants.SUN_DAMAGE_CURVE_CROSSOVER_UV
+    local multiplier = damageCurve and damageCurve.multiplier or Constants.SUN_DAMAGE_CURVE_MULTIPLIER
     local boundedUV = math.max(0.0, math.min(Constants.MAX_SUN_EXPOSURE_MULTIPLIER, localUV))
-    if exponent == 1.0 then return boundedUV end
     return math.min(Constants.MAX_SUN_EXPOSURE_MULTIPLIER,
-        crossoverUV * (boundedUV / crossoverUV) ^ exponent)
+        multiplier * boundedUV ^ exponent)
 end
 
 function SunEffectCalculator.damageMultiplier(weightedUV)
@@ -25,9 +24,10 @@ end
 
 function SunEffectCalculator.calculateRates(model, config, damageCurve)
     local totalDamagePerGameMinute = 0.0
+    local traitDamageMultiplier = model.traitDamageMultiplier or 1.0
     for _, region in pairs(model.regions) do
         local damageUV = SunEffectCalculator.damageUV(region.effectiveUV, damageCurve)
-        region.damagePerMinute = SunEffectCalculator.damage(damageUV * region.weight, 1.0, config)
+        region.damagePerMinute = SunEffectCalculator.damage(damageUV * region.weight, 1.0, config) * traitDamageMultiplier
         if model.debug then
             totalDamagePerGameMinute = totalDamagePerGameMinute + region.damagePerMinute
         end

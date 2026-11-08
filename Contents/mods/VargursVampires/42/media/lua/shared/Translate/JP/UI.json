@@ -2,7 +2,7 @@
     "UI_trait_VargursVampires_Vampire": "吸血鬼",
     "UI_trait_VargursVampires_VampireDesc": "体力の回復速度が向上します。\n肉、生肉、血液を摂取できます。\n死体による体調不良になりにくくなります。\n日光を浴びると露出した皮膚がやけどします。\n肉以外の食べ物では栄養を得られず、体調を崩します。",
     "UI_trait_VargursVampires_SunResistant": "日光耐性",
-    "UI_trait_VargursVampires_SunResistantDesc": "日光から受ける紫外線を20パーセント軽減します。",
+    "UI_trait_VargursVampires_SunResistantDesc": "日光から受ける紫外線を20パーセント軽減し、日光ダメージをさらに20パーセント軽減します。",
     "UI_VargursVampires_BloodExtraction_Extract": "血液を採取",
     "UI_VargursVampires_BloodExtraction_Feed": "血液を飲む",
     "UI_VargursVampires_BloodExtraction_Job": "血液を採取中",

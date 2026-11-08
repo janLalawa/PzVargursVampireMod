@@ -2,7 +2,7 @@
     "UI_trait_VargursVampires_Vampire": "Vampire",
     "UI_trait_VargursVampires_VampireDesc": "Improved health regeneration.\nCan eat meat, raw meat, and blood.\nLowered rate of corpse sickness.\nSunlight burns exposed skin.\nNon-meat does not provide sustenance and will make you ill.",
     "UI_trait_VargursVampires_SunResistant": "Sun Resistant",
-    "UI_trait_VargursVampires_SunResistantDesc": "Reduces incoming sunlight UV by 20 percent.",
+    "UI_trait_VargursVampires_SunResistantDesc": "Reduces incoming sunlight UV by 20 percent and applies an additional 20 percent reduction to sun damage.",
     "UI_VargursVampires_BloodExtraction_Extract": "Extract Blood",
     "UI_VargursVampires_BloodExtraction_Feed": "Drink Blood",
     "UI_VargursVampires_BloodExtraction_Job": "Extracting blood",

@@ -45,6 +45,7 @@ function SunExposure.calculate(environment, model, environmentalUVMultiplier, st
     local stressMultiplier = stress ~= nil and SunStress.multiplier(stress) or 1.0
     local amplifiedUV = boundedUV(environmentalUV * stressMultiplier)
 
+    model.traitDamageMultiplier = environment.traitMultiplier
     if model.debug then
         model.debug.environmentalUV = environmentalUV
         model.debug.sunStress = stress or 0.0

@@ -2,7 +2,7 @@
     "UI_trait_VargursVampires_Vampire": "Vampir",
     "UI_trait_VargursVampires_VampireDesc": "Verbesserte Gesundheitsregeneration.\nKann Fleisch, rohes Fleisch und Blut zu sich nehmen.\nGeringere Anf\u00e4lligkeit f\u00fcr Leichenkrankheit.\nSonnenlicht verbrennt unbedeckte Haut.\nNahrung ohne Fleisch liefert keine N\u00e4hrstoffe und macht krank.",
     "UI_trait_VargursVampires_SunResistant": "Sonnenresistent",
-    "UI_trait_VargursVampires_SunResistantDesc": "Verringert die einfallende UV-Strahlung des Sonnenlichts um 20 Prozent.",
+    "UI_trait_VargursVampires_SunResistantDesc": "Verringert die einfallende UV-Strahlung des Sonnenlichts um 20 Prozent und reduziert den Sonnenschaden zus\u00e4tzlich um 20 Prozent.",
     "UI_VargursVampires_BloodExtraction_Extract": "Blut entnehmen",
     "UI_VargursVampires_BloodExtraction_Feed": "Blut trinken",
     "UI_VargursVampires_BloodExtraction_Job": "Blut wird entnommen",

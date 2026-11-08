@@ -37,6 +37,7 @@ local ProtectionValues = require("VargursVampires/Mechanics/Sun/Protection/Cloth
 ---@field totalWeightedUV number Calculated by the exposure policy.
 ---@field debug SunExposureDebug|nil
 ---@field clothingMultiplier number Calculated by the clothing policy.
+---@field traitDamageMultiplier number Calculated by the exposure policy.
 
 local SunModel = {}
 
@@ -47,6 +48,7 @@ function SunModel.new(previousPain)
         regions = {},
         totalWeightedUV = 0.0,
         clothingMultiplier = 0.0,
+        traitDamageMultiplier = 1.0,
     }
     local totalWeight = 0.0
     for regionName in pairs(ProtectionValues.regions) do
