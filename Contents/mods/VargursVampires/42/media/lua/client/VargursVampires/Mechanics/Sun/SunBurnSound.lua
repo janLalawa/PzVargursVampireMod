@@ -28,8 +28,9 @@ function SunBurnSound.update(playerIndex, intensity)
     local emitter = getEmitter()
     local handle = handlesByPlayerIndex[playerIndex]
     if not handle or not emitter:isPlaying(handle) then
-        handle = emitter:playSound(SOUND_NAME)
-        if handle == 0 then
+        local soundManager = getSoundManager() --[[@as SoundManager]]
+        handle = soundManager:playUISound(SOUND_NAME)
+        if type(handle) ~= "number" or handle <= 0 then
             handlesByPlayerIndex[playerIndex] = nil
             return
         end
