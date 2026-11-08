@@ -23,7 +23,7 @@ function BloodSpice.registerRecipe(recipe)
         return false
     end
 
-    ingredients:put("VargursBloodSpice", ItemRecipe.new("VargursBloodSpice", "Base", 2))
+    ingredients:put("VargursBloodSpice", ItemRecipe.new("VargursBloodSpice", "Base", 15))
     return true
 end
 

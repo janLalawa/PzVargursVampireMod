@@ -20,7 +20,7 @@ module Base
 
     fluid VargursBoiledZombieBlood
     {
-        ColorReference = Cola,
+        Color = 0.35:0.01:0.02,
         DisplayName = Fluid_Name_VargursBoiledZombieBlood,
         Categories
         {

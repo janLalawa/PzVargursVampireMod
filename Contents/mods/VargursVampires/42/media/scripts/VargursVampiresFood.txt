@@ -9,12 +9,12 @@ module Base
         Weight = 0.2,
         Spice = true,
         FoodType = Meat,
-        HungerChange = -10.0,
+        HungerChange = -15.0,
         Calories = 0.0,
         Carbohydrates = 0.0,
         Proteins = 0.0,
         Lipids = 0.0,
         CantBeFrozen = true,
-        EvolvedRecipe = Pizza:2;Sandwich:2;Burger:2;Rice:2;Pasta:2;Stir fry:2;Salad:2;Taco:2;Burrito:2;Soup:2;Stew:2,
+        EvolvedRecipe = Pizza:15;Sandwich:15;Burger:15;Rice:15;Pasta:15;Stir fry:15;Salad:15;Taco:15;Burrito:15;Soup:15;Stew:15,
     }
 }

@@ -12,6 +12,13 @@ local sustainingTypes = {
     Venison = true,
 }
 
+---@type table<string, boolean|nil>
+local sustainingItems = {
+    ["Base.DeadBird"] = true,
+    ["Base.DeadRabbit"] = true,
+    ["Base.DeadSquirrel"] = true,
+}
+
 local FoodTypes = {}
 local hasItemTag = _G.hasItemTag
 local ItemTag = _G.ItemTag
@@ -24,7 +31,10 @@ function FoodTypes.isSustaining(foodType, fullType)
     end
 
     return fullType ~= nil
-        and (hasItemTag(fullType, ItemTag.FISH_MEAT) or hasItemTag(fullType, ItemTag.UNCUT_FISH))
+        and (sustainingItems[fullType] == true
+            or hasItemTag(fullType, ItemTag.FISH_MEAT)
+            or hasItemTag(fullType, ItemTag.UNCUT_FISH)
+            or hasItemTag(fullType, ItemTag.VERMIN))
 end
 
 return FoodTypes
